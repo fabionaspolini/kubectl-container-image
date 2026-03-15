@@ -10,8 +10,8 @@ Container to execute kubectl commands.
 
 ## Kubectl versions
 
-Atual: <https://dl.k8s.io/release/stable.txt>  
-Histórico: https://kubernetes.io/releases/
+- **Last version**: <https://dl.k8s.io/release/stable.txt>  
+- **History**: https://kubernetes.io/releases/
 
 ## How to use this image
 
@@ -30,20 +30,20 @@ docker run --rm -it -v /<path>/<to>/<your>/<kube>/config:/root/.kube/config fabi
 
 ## Environment Variables
 
-- KUBECONFIG_BASE64: Kubectl config file encoded at base64
-- VERBOSE: Show additional logs
+- `KUBECONFIG_BASE64`: Kubectl config file encoded at base64
+- `VERBOSE`: Show additional logs
 
 **AWS EKS Support**
 
 Kubectl config to AWS EKS need AWS cli configured with environments:
 
-- AWS_ACCESS_KEY_ID
-- AWS_SECRET_ACCESS_KEY
-- AWS_REGION
+- `AWS_ACCESS_KEY_ID`
+- `AWS_SECRET_ACCESS_KEY`
+- `AWS_REGION`
 
 ## Volumes
 
-- /root/.kube/config: Kubectl config file
+- `/root/.kube/config`: Kubectl config file
 
 ## Examples
 
@@ -89,7 +89,9 @@ deploy to production:
 
 ## Repository
 
-Official repository: https://gitlab.com/fabionaspolini/kubectl
+Official repositories:
+- **docker**: <https://gitlab.com/fabionaspolini/kubectl>
+- **git**: <https://github.com/fabionaspolini/kubectl-container-image>
 
 ## How build this image
 
