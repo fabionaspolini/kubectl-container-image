@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       version:
-        description: 'Kubectl version to publish. --- Pattern: X.XX --- See in https://kubernetes.io/releases/'
+        description: 'Kubectl version to publish, pattern: X.XX ➡️ See in https://kubernetes.io/releases/'
         required: true
         type: string
       push_latest:
