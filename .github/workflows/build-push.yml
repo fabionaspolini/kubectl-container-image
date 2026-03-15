@@ -38,8 +38,7 @@ jobs:
           context: ./generic
           file: ./generic/Dockerfile
           push: true
-          build-args:
-            - KUBECTL_VERSION: "${{ inputs.version }}"
+          build-args: "KUBECTL_VERSION=${{ inputs.version }}"
           tags: |
             fabionaspolini/kubectl:${{ inputs.version }}
             ${{ matrix.version.push_latest && 'fabionaspolini/kubectl:latest' || '' }}
