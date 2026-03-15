@@ -2,11 +2,10 @@
 
 Container to execute kubectl commands.
 
-## Supported tags and respective Dockerfile links
+## Supported tags
 
-- [1.21.3, 1.21, latest](https://gitlab.com/fabionaspolini/kubectl/-/blob/master/1.21/Dockerfile)
-- [1.20.9, 1.20](https://gitlab.com/fabionaspolini/kubectl/-/blob/master/1.20/Dockerfile)
-- [1.19.3, 1.19](https://gitlab.com/fabionaspolini/kubectl/-/blob/master/1.19/Dockerfile)
+- https://hub.docker.com/r/fabionaspolini/kubectl/tags
+- [Dockerfile reference](generic/Dockerfile)
 
 ## Kubectl versions
 
@@ -90,7 +89,7 @@ deploy to production:
 ## Repository
 
 Official repositories:
-- **docker**: <https://gitlab.com/fabionaspolini/kubectl>
+- **docker image**: <https://hub.docker.com/r/fabionaspolini/kubectl>
 - **git**: <https://github.com/fabionaspolini/kubectl-container-image>
 
 ## How build this image

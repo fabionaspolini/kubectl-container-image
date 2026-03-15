@@ -1,29 +1,24 @@
 name: Build and Push Docker Images
 
-on:
-  push:
-    branches:
-      - main
+on: 
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Kubectl version to publish. Pattern: X.XX → See in https://kubernetes.io/releases/'
+        required: true
+        type: string
+      push_latest:
+        description: 'Should publish "latest" image tag?'
+        required: true
+        default: false
+        type: choice
+        options:
+          - true
+          - false
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        version:
-          - version: '1.35'
-            specific_tag: '1.35.2'
-            push_latest: true
-#          - version: '1.21'
-#            specific_tag: '1.21.3'
-#            push_latest: false
-#          - version: '1.20'
-#            specific_tag: '1.20.9'
-#            push_latest: false
-#          - version: '1.19'
-#            specific_tag: '1.19.3'
-#            push_latest: false
-
     steps:
       - name: Checkout código
         uses: actions/checkout@v4
@@ -37,14 +32,14 @@ jobs:
       - name: Setup Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      - name: Build e Push imagem ${{ matrix.version.version }}
+      - name: "Build e Push imagem ${{ inputs.version }} - push_latest: ${{ inputs.push_latest }}"
         uses: docker/build-push-action@v5
         with:
-          context: ./${{ matrix.version.version }}
-          file: ./${{ matrix.version.version }}/Dockerfile
+          context: ./generic
+          file: ./generic/Dockerfile
           push: true
+          build-args:
+            - KUBECTL_VERSION: "${{ inputs.version }}"
           tags: |
-            fabionaspolini/kubectl:${{ matrix.version.specific_tag }}
-            fabionaspolini/kubectl:${{ matrix.version.version }}
+            fabionaspolini/kubectl:${{ inputs.version }}
             ${{ matrix.version.push_latest && 'fabionaspolini/kubectl:latest' || '' }}
-
