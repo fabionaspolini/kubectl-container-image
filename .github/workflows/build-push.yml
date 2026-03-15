@@ -10,11 +10,11 @@ on:
       push_latest:
         description: 'Should publish "latest" image tag?'
         required: true
-        default: false
+        default: 'false'
         type: choice
         options:
-          - true
-          - false
+          - 'true'
+          - 'false'
 
 jobs:
   build:
@@ -42,4 +42,4 @@ jobs:
           build-args: "KUBECTL_VERSION=${{ inputs.version }}"
           tags: |
             fabionaspolini/kubectl:${{ inputs.version }}
-            ${{ inputs.push_latest && 'fabionaspolini/kubectl:latest' || '' }}
+            ${{ inputs.push_latest == 'true' && 'fabionaspolini/kubectl:latest' || '' }}

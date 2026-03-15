@@ -2,10 +2,11 @@
 
 Container to execute kubectl commands.
 
-## Supported tags
+## Links
 
-- https://hub.docker.com/r/fabionaspolini/kubectl/tags
-- [Dockerfile reference](generic/Dockerfile)
+- [Image tags](https://hub.docker.com/r/fabionaspolini/kubectl/tags)
+- [GitHub](https://github.com/fabionaspolini/kubectl-container-image)
+  - [Dockerfile reference](https://github.com/fabionaspolini/kubectl-container-image/blob/main/generic/Dockerfile)
 
 ## Kubectl versions
 
@@ -85,12 +86,6 @@ deploy to production:
     - kubectl apply -n prod -f ci/deploy.yml
     - kubectl apply -n prod -f ci/ingress.yml
 ```
-
-## Repository
-
-Official repositories:
-- **docker image**: <https://hub.docker.com/r/fabionaspolini/kubectl>
-- **git**: <https://github.com/fabionaspolini/kubectl-container-image>
 
 ## How build this image
 
