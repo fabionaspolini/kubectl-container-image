@@ -21,7 +21,7 @@ jobs:
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'
     steps:
-      - name: Checkout código
+      - name: Checkout
         uses: actions/checkout@v4
 
       - name: Login no Docker Hub
@@ -42,4 +42,4 @@ jobs:
           build-args: "KUBECTL_VERSION=${{ inputs.version }}"
           tags: |
             fabionaspolini/kubectl:${{ inputs.version }}
-            ${{ matrix.version.push_latest && 'fabionaspolini/kubectl:latest' || '' }}
+            ${{ inputs.push_latest && 'fabionaspolini/kubectl:latest' || '' }}
