@@ -5,7 +5,7 @@ LABEL maintainer="Fábio Naspolini@fabionaspolini@gmail.com"
 ARG KUBECTL_VERSION
 
 # from https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/#install-kubectl-binary-with-curl-on-linux
-RUN apt-get update && apt-get install -y curl apt-transport-https ca-certificates curl gnupg unzip
+RUN apt-get update && apt-get install -y curl apt-transport-https ca-certificates gnupg unzip
 RUN curl -LO "https://dl.k8s.io/release/v${KUBECTL_VERSION}/bin/linux/amd64/kubectl"
 RUN curl -LO "https://dl.k8s.io/release/v${KUBECTL_VERSION}/bin/linux/amd64/kubectl.sha256"
 RUN echo "$(cat kubectl.sha256) kubectl" | sha256sum --check
