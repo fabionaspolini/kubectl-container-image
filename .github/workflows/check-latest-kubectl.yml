@@ -3,7 +3,6 @@ name: Check latest kubectl version
 on:
   schedule:
     - cron: '0 0 * * 2'  # Every Tuesday at 00:00 UTC
-    - cron: '12 2 * * *' 
   workflow_dispatch:  # Allow manual trigger
 
 jobs:

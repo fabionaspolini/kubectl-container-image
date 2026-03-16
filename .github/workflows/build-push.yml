@@ -1,6 +1,6 @@
 name: Build and push docker images
 
-on: 
+on:
   workflow_dispatch:
     inputs:
       version:
@@ -15,11 +15,21 @@ on:
         options:
           - 'true'
           - 'false'
+  workflow_call:
+    inputs:
+      version:
+        description: 'Kubectl version to publish, pattern: X.XX'
+        required: true
+        type: string
+      push_latest:
+        description: 'Should publish "latest" image tag?'
+        required: true
+        type: string
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/main' || github.event_name == 'workflow_call'
     steps:
       - name: Checkout
         uses: actions/checkout@v4
