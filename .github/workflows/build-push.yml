@@ -1,7 +1,7 @@
 name: Build and push docker images
 
 on:
-  workflow_dispatch: &common_inputs
+  workflow_dispatch: &workflow_dispatch_inputs
     inputs:
       version:
         description: 'Kubectl version to publish, pattern: X.XX ➡️ See in https://kubernetes.io/releases/'
@@ -16,7 +16,7 @@ on:
           - 'true'
           - 'false'
   workflow_call:
-    inputs: *common_inputs
+    inputs: *workflow_dispatch_inputs
 
 jobs:
   build:
