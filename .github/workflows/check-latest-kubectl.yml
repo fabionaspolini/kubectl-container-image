@@ -16,8 +16,12 @@ jobs:
       - name: Get latest kubectl version
         id: get-version
         run: |
-          VERSION=$(curl -s https://dl.k8s.io/release/stable.txt)
-          echo "Latest kubectl version: $VERSION"
+          LATEST_VERSION=$(curl -s https://dl.k8s.io/release/stable.txt)
+          echo "Latest kubectl version: $LATEST_VERSION"
+          
+          # Remove 'v' prefix and extract major.minor (e.g., v1.35.2 -> 1.35.2)
+          VERSION=$(echo "$LATEST_VERSION" | sed 's/^v//' | cut -d'.' -f1,2,3)
+          echo "::notice::Version (major.minor.patch): $VERSION"
                     
           echo "version=$VERSION" >> $GITHUB_OUTPUT
 
