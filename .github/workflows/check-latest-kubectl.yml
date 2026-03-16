@@ -15,8 +15,8 @@ jobs:
       - name: Get latest kubectl version
         id: get-version
         run: |
-          LATEST_VERSION=$(curl -s https://dl.k8s.io/release/stable.txt)
-          echo "Latest kubectl version: $LATEST_VERSION"
+          VERSION=$(curl -s https://dl.k8s.io/release/stable.txt)
+          echo "Latest kubectl version: $VERSION"
                     
           echo "version=$VERSION" >> $GITHUB_OUTPUT
 
