@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       version:
-        description: 'Kubectl version to publish, pattern: X.XX ➡️ See in https://kubernetes.io/releases/'
+        description: 'Kubectl version to publish, pattern: X.XX.X ➡️ See in https://kubernetes.io/releases/'
         required: true
         type: string
       push_latest:
@@ -18,7 +18,7 @@ on:
   workflow_call:
     inputs:
       version:
-        description: 'Kubectl version to publish, pattern: X.XX'
+        description: 'Kubectl version to publish, pattern: X.XX.X ➡️ See in https://kubernetes.io/releases/'
         required: true
         type: string
       push_latest:
@@ -30,7 +30,39 @@ jobs:
   build:
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main' || github.event_name == 'workflow_call'
+    outputs:
+      version_major_minor: ${{ steps.parse-version.outputs.version_major_minor }}
+      version_major: ${{ steps.parse-version.outputs.version_major }}
     steps:
+      - name: Validate version format
+        run: |
+          VERSION="${{ inputs.version }}"
+          echo "Validating version format: $VERSION"
+          
+          # Validate format: major.minor.patch (e.g., 1.35.2)
+          if ! echo "$VERSION" | grep -qE '^[0-9]+\.[0-9]+\.[0-9]+$'; then
+            echo "::error::Invalid version format: '$VERSION'. Expected format: major.minor.patch (e.g., 1.35.2)"
+            exit 1
+          fi
+          
+          echo "✓ Version format is valid"
+
+      - name: Parse version
+        id: parse-version
+        run: |
+          VERSION="${{ inputs.version }}"
+          
+          # Extract major.minor (e.g., 1.35)
+          VERSION_MAJOR_MINOR=$(echo "$VERSION" | cut -d'.' -f1,2)
+          
+          # Extract major (e.g., 1)
+          VERSION_MAJOR=$(echo "$VERSION" | cut -d'.' -f1)
+          
+          echo "Parsed version: major.minor=$VERSION_MAJOR_MINOR, major=$VERSION_MAJOR"
+          
+          echo "version_major_minor=$VERSION_MAJOR_MINOR" >> $GITHUB_OUTPUT
+          echo "version_major=$VERSION_MAJOR" >> $GITHUB_OUTPUT
+
       - name: Checkout
         uses: actions/checkout@v4
 
@@ -52,4 +84,5 @@ jobs:
           build-args: "KUBECTL_VERSION=${{ inputs.version }}"
           tags: |
             fabionaspolini/kubectl:${{ inputs.version }}
+            ${{ inputs.push_latest == 'true' && 'fabionaspolini/kubectl:${{ steps.parse-version.outputs.version_major_minor }}' || '' }}
             ${{ inputs.push_latest == 'true' && 'fabionaspolini/kubectl:latest' || '' }}

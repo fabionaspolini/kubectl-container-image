@@ -1,4 +1,4 @@
-name: Check latest kubectl version
+name: Publish latest kubectl version if newer
 
 on:
   schedule:
@@ -17,11 +17,7 @@ jobs:
         run: |
           LATEST_VERSION=$(curl -s https://dl.k8s.io/release/stable.txt)
           echo "Latest kubectl version: $LATEST_VERSION"
-          
-          # Remove 'v' prefix and extract major.minor (e.g., v1.35.2 -> 1.35)
-          VERSION=$(echo "$LATEST_VERSION" | sed 's/^v//' | cut -d'.' -f1,2)
-          echo "Version (major.minor): $VERSION"
-          
+                    
           echo "version=$VERSION" >> $GITHUB_OUTPUT
 
       - name: Check if tag exists on Docker Hub
@@ -38,9 +34,13 @@ jobs:
           if [ "$HTTP_STATUS" = "200" ]; then
             echo "Tag '$VERSION' already exists on Docker Hub."
             echo "should_publish=false" >> $GITHUB_OUTPUT
-          else
+          elsif [ "$HTTP_STATUS" = "404" ]; then
             echo "Tag '$VERSION' does not exist. Will publish."
             echo "should_publish=true" >> $GITHUB_OUTPUT
+          else
+            echo "::error::Error on check if image tag already exists."
+            echo "should_publish=false" >> $GITHUB_OUTPUT
+            exit 1
           fi
 
   publish:
