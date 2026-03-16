@@ -52,6 +52,7 @@ jobs:
     needs: check-version
     if: needs.check-version.outputs.should_publish == 'true'
     uses: ./.github/workflows/build-push.yml
+    secrets: inherit
     with:
       version: ${{ needs.check-version.outputs.version }}
       push_latest: 'true'
