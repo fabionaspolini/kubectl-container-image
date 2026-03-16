@@ -1,0 +1,53 @@
+name: Check latest kubectl version
+
+on:
+  schedule:
+    - cron: '0 0 * * 2'  # Every Tuesday at 00:00 UTC
+    - cron: '12 2 * * *' 
+  workflow_dispatch:  # Allow manual trigger
+
+jobs:
+  check-version:
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.get-version.outputs.version }}
+      should_publish: ${{ steps.check-tag.outputs.should_publish }}
+    steps:
+      - name: Get latest kubectl version
+        id: get-version
+        run: |
+          LATEST_VERSION=$(curl -s https://dl.k8s.io/release/stable.txt)
+          echo "Latest kubectl version: $LATEST_VERSION"
+          
+          # Remove 'v' prefix and extract major.minor (e.g., v1.35.2 -> 1.35)
+          VERSION=$(echo "$LATEST_VERSION" | sed 's/^v//' | cut -d'.' -f1,2)
+          echo "Version (major.minor): $VERSION"
+          
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+
+      - name: Check if tag exists on Docker Hub
+        id: check-tag
+        run: |
+          VERSION="${{ steps.get-version.outputs.version }}"
+          TAG_URL="https://hub.docker.com/v2/repositories/fabionaspolini/kubectl/tags/${VERSION}"
+          
+          echo "Checking if tag '$VERSION' exists on Docker Hub..."
+          
+          # Check if tag exists (HTTP 200 = exists, HTTP 404 = not found)
+          HTTP_STATUS=$(curl -s -o /dev/null -w "%{http_code}" "$TAG_URL")
+          
+          if [ "$HTTP_STATUS" = "200" ]; then
+            echo "Tag '$VERSION' already exists on Docker Hub."
+            echo "should_publish=false" >> $GITHUB_OUTPUT
+          else
+            echo "Tag '$VERSION' does not exist. Will publish."
+            echo "should_publish=true" >> $GITHUB_OUTPUT
+          fi
+
+  publish:
+    needs: check-version
+    if: needs.check-version.outputs.should_publish == 'true'
+    uses: ./.github/workflows/build-push.yml
+    with:
+      version: ${{ needs.check-version.outputs.version }}
+      push_latest: 'true'
