@@ -37,7 +37,7 @@ jobs:
           HTTP_STATUS=$(curl -s -o /dev/null -w "%{http_code}" "$TAG_URL")
           
           if [ "$HTTP_STATUS" = "200" ]; then
-            echo "::notice::Tag '$VERSION' already exists on Docker Hub."
+            echo "::warning::Tag '$VERSION' already exists on Docker Hub."
             echo "should_publish=false" >> $GITHUB_OUTPUT
           elif [ "$HTTP_STATUS" = "404" ]; then
             echo "::warning::Tag '$VERSION' does not exist. Will publish."
