@@ -78,8 +78,8 @@ jobs:
       - name: "Build e Push image ${{ inputs.version }} - push_latest: ${{ inputs.push_latest }}"
         uses: docker/build-push-action@v5
         with:
-          context: ./generic
-          file: ./generic/Dockerfile
+          context: ./src
+          file: ./src/Dockerfile
           push: true
           build-args: "KUBECTL_VERSION=${{ inputs.version }}"
           tags: |
