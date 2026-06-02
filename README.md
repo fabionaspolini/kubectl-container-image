@@ -5,8 +5,8 @@ Container to execute kubectl commands.
 ## Links
 
 - [Image tags](https://hub.docker.com/r/fabionaspolini/kubectl/tags)
-- [GitHub](https://github.com/fabionaspolini/kubectl-container-image)
-  - [Dockerfile reference](https://github.com/fabionaspolini/kubectl-container-image/blob/main/generic/Dockerfile)
+- [GitHub](https://github.com/fabionaspolini/kubectl-container)
+  - [Dockerfile reference](https://github.com/fabionaspolini/kubectl-container/blob/main/src/Dockerfile)
 
 ## Kubectl versions
 
